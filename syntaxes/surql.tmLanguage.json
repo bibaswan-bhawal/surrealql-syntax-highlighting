@@ -1,32 +1,29 @@
 {
 	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"scopeName": "source.surql",
 	"name": "SurrealQL",
-	"patterns": [
-		{
-			"include": "#keywords"
-		},
-		{
-			"include": "#strings"
-		}
-	],
+	"fileTypes": ["surql"],
+	"patterns": [{ "include": "#surql" }],
 	"repository": {
-		"keywords": {
-			"patterns": [{
-				"name": "keyword.control.surql",
-				"match": "\\b(if|while|for|return)\\b"
-			}]
-		},
-		"strings": {
-			"name": "string.quoted.double.surql",
-			"begin": "\"",
-			"end": "\"",
+		"surql": {
 			"patterns": [
-				{
-					"name": "constant.character.escape.surql",
-					"match": "\\\\."
-				}
+				{ "include": "#surql-mutation" },
+				{ "include": "#surql-define-fragment" }
 			]
+		},
+		"surql-mutation": {
+			"match": "\\s*\\b(CREATE|UPDATE|DELETE)\\b",
+			"captures": {
+				"1": { "name": "entity.name.function.mutation.surql" }
+			}
+		},
+		"surql-define-fragment": {
+			"name": "meta.define.surql",
+			"match": "\\s*\\b(?:(DEFINE)\\b\\s*\\b(FIELD|FUNCTION|EVENT|TABLE|NAMESPACE|DATABASE|INDEX))\\b",
+			"captures": {
+				"1": { "name": "entity.name.function.surql" },
+				"2": { "name": "storage.type.define.surql" }
+			}
 		}
-	},
-	"scopeName": "source.surql"
+	}
 }

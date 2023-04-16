@@ -1,25 +1,58 @@
 {
-  "name": "surrealql-syntax-highlighting",
-  "displayName": "SurrealQL: Syntax Highlighting",
-  "description": "Syntax highlighting for SurrealQL the query language for SurrealDB",
-  "version": "0.0.1",
-  "engines": {
-    "vscode": "^1.77.0"
-  },
-  "categories": [
-    "Programming Languages"
-  ],
-  "contributes": {
-    "languages": [{
-      "id": "surql",
-      "aliases": ["SurrealQL", "surql"],
-      "extensions": ["surql"],
-      "configuration": "./language-configuration.json"
-    }],
-    "grammars": [{
-      "language": "surql",
-      "scopeName": "source.surql",
-      "path": "./syntaxes/surql.tmLanguage.json"
-    }]
-  }
+	"name": "surrealql-syntax-highlighting",
+	"displayName": "SurrealQL: Syntax Highlighting",
+	"description": "Syntax highlighting for SurrealQL the query language for SurrealDB",
+	"version": "0.0.1",
+	"engines": {
+		"vscode": "^1.77.0"
+	},
+	"categories": [
+		"Programming Languages"
+	],
+	"contributes": {
+		"languages": [
+			{
+				"id": "surql",
+				"aliases": [
+					"SurrealQL",
+					"surql"
+				],
+				"extensions": [
+					"surql"
+				],
+				"configuration": "./language-configuration.json"
+			}
+		],
+		"grammars": [
+			{
+				"language": "surql",
+				"scopeName": "source.surql",
+				"path": "./syntaxes/surql.tmLanguage.json"
+			}
+		],
+		"configurationDefaults": {
+			"editor.tokenColorCustomizations": {
+				"textMateRules": [
+					{
+						"scope": "entity.name.function.mutation.surql",
+						"settings": {
+							"foreground": "#ff009e"
+						}
+					},
+					{
+						"scope": "entity.name.function.surql",
+						"settings": {
+							"foreground": "#ff009e"
+						}
+					},
+					{
+						"scope": "storage.type.define.surql",
+						"settings": {
+							"foreground": "#ff009e"
+						}
+					}
+				]
+			}
+		}
+	}
 }
