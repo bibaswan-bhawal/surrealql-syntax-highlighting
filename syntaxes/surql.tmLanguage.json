@@ -6,24 +6,21 @@
 	"patterns": [{ "include": "#surql" }],
 	"repository": {
 		"surql": {
-			"patterns": [
-				{ "include": "#surql-mutation" },
-				{ "include": "#surql-define-fragment" }
-			]
-		},
-		"surql-mutation": {
-			"match": "\\s*\\b(CREATE|UPDATE|DELETE)\\b",
-			"captures": {
-				"1": { "name": "entity.name.function.mutation.surql" }
-			}
+			"patterns": [{ "include": "#surql-define-fragment" }]
 		},
 		"surql-define-fragment": {
 			"name": "meta.define.surql",
-			"match": "\\s*\\b(?:(DEFINE)\\b\\s*\\b(FIELD|FUNCTION|EVENT|TABLE|NAMESPACE|DATABASE|INDEX))\\b",
-			"captures": {
-				"1": { "name": "entity.name.function.surql" },
-				"2": { "name": "storage.type.define.surql" }
-			}
+			"begin": "\\b(DEFINE)\\b",
+			"end": "(\\s*;)|(^(?:(?=[a-zA-Z])))",
+			"beginCaptures": {
+				"1": { "name": "entity.name.function.surql" }
+			},
+			"patterns": [
+				{
+					"name": "storage.type.define.surql",
+					"match": "\\s*\\b(FIELD|FUNCTION|EVENT|TABLE|NAMESPACE|DATABASE|INDEX|ON|UNIQUE|COLUMNS|SCHEMAFULL|TYPE|WHEN|THEN|LOGIN|TOKEN|PASSWORD|PASSHASH|SCOPE|SESSION|SIGNUP|SIGNIN|DROP|SCHEMALESS|FROM|GROUP|BY|PREMISSIONS|NONE|FULL|FOR|ASSERT|VALUE|FIELDS|PARAM)\\b"
+				}
+			]
 		}
 	}
 }
