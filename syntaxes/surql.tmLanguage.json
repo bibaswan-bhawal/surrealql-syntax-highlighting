@@ -6,21 +6,52 @@
 	"patterns": [{ "include": "#surql" }],
 	"repository": {
 		"surql": {
-			"patterns": [{ "include": "#surql-define-fragment" }]
+			"patterns": [{ "include": "#surql-define-fragment" }, { "include": "#surql-comment" }]
+		},
+		"surql-comment": {
+			"name": "comment.line.double-slash.surql",
+			"begin": "\\s*--.*\\s*",
+			"end": "(^(?:(?=[a-zA-Z])))"
 		},
 		"surql-define-fragment": {
 			"name": "meta.define.surql",
 			"begin": "\\b(DEFINE)\\b",
-			"end": "(\\s*;)|(^(?:(?=[a-zA-Z])))",
-			"beginCaptures": {
-				"1": { "name": "entity.name.function.surql" }
-			},
+			"end": "(\\.*;)|(^(?:(?=[a-zA-Z])))",
+			"beginCaptures": { "1": { "name": "entity.name.function.surql" } },
 			"patterns": [
 				{
-					"name": "storage.type.define.surql",
-					"match": "\\s*\\b(FIELD|FUNCTION|EVENT|TABLE|NAMESPACE|DATABASE|INDEX|ON|UNIQUE|COLUMNS|SCHEMAFULL|TYPE|WHEN|THEN|LOGIN|TOKEN|PASSWORD|PASSHASH|SCOPE|SESSION|SIGNUP|SIGNIN|DROP|SCHEMALESS|FROM|GROUP|BY|PREMISSIONS|NONE|FULL|FOR|ASSERT|VALUE|FIELDS|PARAM)\\b"
+					"match": "\\s*\\b(NAMESPACE|NS)\\s+\\n*\\s*(\\w+)\\b",
+					"captures": {
+						"1": { "name": "storage.type.surql.namespace" },
+						"2": { "name": "variable.parameter.surql" }
+					}
+				},
+				{
+					"match": "\\s*\\b(DATABASE|DB)\\s+\\n*\\s*(\\w+)\\b",
+					"captures": {
+						"1": { "name": "storage.type.surql.database" },
+						"2": { "name": "variable.parameter.surql" }
+					}
+				},
+				{
+					"begin": "\\s*\\b(LOGIN)\\b",
+					"end": "(\\s*;)|(^(?:(?=[a-zA-Z])))",
+					"beginCaptures": { "1": { "name": "storage.type.surql.login" } },
+					"patterns": [
+						{ "include": "#surql-type-name" },
+						{
+							"begin": "\\s*\\b(ON)\\b",
+							"end": "\\s",
+							"beginCaptures": { "1": { "name": "storage.modifier.surql.on" } },
+							"patterns": [{ "include": "#surql-type-database" }]
+						}
+					]
 				}
 			]
+		},
+		"surql-type-name": {
+			"name": "variable.parameter.surql",
+			"match": "\\b(\\w+)\\b"
 		}
 	}
 }

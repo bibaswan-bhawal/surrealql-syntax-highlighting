@@ -34,21 +34,27 @@
 			"editor.tokenColorCustomizations": {
 				"textMateRules": [
 					{
-						"scope": "entity.name.function.mutation.surql",
-						"settings": {
-							"foreground": "#ff009e"
-						}
-					},
-					{
 						"scope": "entity.name.function.surql",
 						"settings": {
 							"foreground": "#ff009e"
 						}
 					},
 					{
-						"scope": "storage.type.define.surql",
+						"scope": "storage.type.surql",
 						"settings": {
 							"foreground": "#ff009e"
+						}
+					},
+					{
+						"scope": "storage.modifier.surql",
+						"settings": {
+							"foreground": "#ff009e"
+						}
+					},
+					{
+						"scope": "variable.parameter.surql",
+						"settings": {
+							"foreground": "#ffffff"
 						}
 					}
 				]
