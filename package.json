@@ -34,7 +34,19 @@
 			"editor.tokenColorCustomizations": {
 				"textMateRules": [
 					{
-						"scope": "entity.name.function.surql",
+						"scope": "string.quoted.single.surql",
+						"settings": {
+							"foreground": "#00ff6e"
+						}
+					},
+					{
+						"scope": "string.quoted.double.surql",
+						"settings": {
+							"foreground": "#00ff6e"
+						}
+					},
+					{
+						"scope": "storage.modifier.surql",
 						"settings": {
 							"foreground": "#ff009e"
 						}
@@ -46,7 +58,13 @@
 						}
 					},
 					{
-						"scope": "storage.modifier.surql",
+						"scope": "entity.name.function.surql",
+						"settings": {
+							"foreground": "#ff009e"
+						}
+					},
+					{
+						"scope": "variable.language.surql",
 						"settings": {
 							"foreground": "#ff009e"
 						}
@@ -55,6 +73,12 @@
 						"scope": "variable.parameter.surql",
 						"settings": {
 							"foreground": "#ffffff"
+						}
+					},
+					{
+						"scope": "variable.parameter.surql.duration",
+						"settings": {
+							"foreground": "#00dbff"
 						}
 					}
 				]
