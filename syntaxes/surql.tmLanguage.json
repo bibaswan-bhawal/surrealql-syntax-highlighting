@@ -8,56 +8,81 @@
 		"surql": {
 			"patterns": [
 				{ "include": "#surql-comment" },
-				{ "include": "#surql-define-fragment" },
-				{ "include": "#surql-type-single-string" },
-				{ "include": "#surql-type-double-string" }
+				{ "include": "#surql-define-fragment" }
 			]
 		},
 		"surql-comment": {
 			"name": "comment.line.double-slash.surql",
 			"match": "\\s*--.*\\s*"
 		},
-		"surql-type-name": {
-			"name": "variable.parameter.surql",
-			"begin": "(?<=(\\s+))(\\w+)",
-			"end": "?=(\\s+)"
-		},
-		"surql-type-namespace": {
+		"surql-statement-namespace": {
 			"begin": "\\b(NAMESPACE|NS)\\b",
 			"end": "(\\.*;)|(^(?:(?=[a-zA-Z])))",
 			"beginCaptures": { "1": { "name": "storage.type.surql.namespace" } },
 			"patterns": [
 				{ "include": "#surql-comment" },
-				{ "include": "#surql-type-name" }
+				{ "include": "#surql-variable" }
 			]
 		},
-		"surql-type-database": {
+		"surql-statement-database": {
 			"begin": "\\b(DATABASE|DB)\\b",
 			"end": "(\\.*;)|(^(?:(?=[a-zA-Z])))",
 			"beginCaptures": { "1": { "name": "storage.type.surql.database" } },
 			"patterns": [
 				{ "include": "#surql-comment" },
-				{ "include": "#surql-type-name" }
+				{ "include": "#surql-variable" }
 			]
 		},
-		"surql-type-scope": {
+		"surql-statement-scope": {
 			"begin": "\\b(SCOPE)\\b\\s*",
 			"end": "\\s+",
 			"captures": { "1": { "name": "storage.type.surql.scope" } },
 			"patterns": [
 				{ "include": "#surql-comment" },
-				{ "include": "#surql-type-name" }
+				{ "include": "#surql-variable" }
 			]
 		},
-		"surql-type-single-string": {
+		"surql-statement-from": {
+			"match": "\\s+\\b(FROM)\\b\\s+(\\w*)",
+			"captures": {
+				"1": { "name": "entity.name.function.surql.from" },
+				"2": { "name": "variable.parameter.surql.table_name" }
+			}
+		},
+		"surql-statement-group-by": {
+			"match": "\\s+\\b(GROUP BY)\\b\\s+(\\w*)",
+			"captures": {
+				"1": { "name": "entity.name.function.surql.group_by" },
+				"2": { "name": "variable.parameter.surql.column_name" }
+			}
+		},
+		"surql-statement-where": {
+			"match": "\\s+\\b(WHERE)\\b\\s+(.*)",
+			"captures": {
+				"1": { "name": "entity.name.function.surql.where" },
+				"2": { "name": "meta.function.surql.where" }
+			}
+		},
+		"surql-statement-permission": {
+			"begin": "\\b(PERMISSIONS)\\b",
+			"end": "(\\.*;)|(^(?:(?=[a-zA-Z])))",
+			"beginCaptures": { "1": { "name": "storage.type.surql.permission" } },
+			"patterns": [{ "include": "#surql-comment" }]
+		},
+		"surql-variable": {
+			"name": "variable.parameter.surql",
+			"begin": "(?<=(\\s+))(\\w+)",
+			"end": "?=(\\s+)"
+		},
+		"surql-string-single": {
 			"name": "string.quoted.single.surql",
 			"match": "'(.*?)'"
 		},
-		"surql-type-double-string": {
+		"surql-string-double": {
 			"name": "string.quoted.double.surql",
 			"match": "\"(.*?)\""
 		},
-		"surql-type-projection": {
+		"surql-projection": {
 			"match": "(.*)\\s+\\b(AS)\\b\\s+(\\w*)",
 			"captures": {
 				"1": { "name": "variable.parameter.surql.project_from" },
@@ -72,15 +97,15 @@
 			"beginCaptures": { "1": { "name": "entity.name.function.surql.define" } },
 			"patterns": [
 				{ "include": "#surql-comment" },
-				{ "include": "#surql-type-namespace" },
-				{ "include": "#surql-type-database" },
+				{ "include": "#surql-statement-namespace" },
+				{ "include": "#surql-statement-database" },
 				{
 					"begin": "\\s*\\b(LOGIN)\\b",
 					"end": "(\\s*;)|(^(?:(?=[a-zA-Z])))",
 					"beginCaptures": { "1": { "name": "storage.type.surql.login" } },
 					"patterns": [
 						{ "include": "#surql-comment" },
-						{ "include": "#surql-type-name" },
+						{ "include": "#surql-variable" },
 						{
 							"begin": "\\s*\\b(ON)\\b",
 							"end": "(\\s*;)|(^(?:(?=[a-zA-Z])))",
@@ -99,8 +124,8 @@
 									"name": "storage.type.surql.PASSWORD",
 									"match": "\\b(PASSWORD|PASSHASH)\\b"
 								},
-								{ "include": "#surql-type-single-string" },
-								{ "include": "#surql-type-double-string" }
+								{ "include": "#surql-string-single" },
+								{ "include": "#surql-string-double" }
 							]
 						}
 					]
@@ -111,7 +136,7 @@
 					"beginCaptures": { "1": { "name": "storage.type.surql.token" } },
 					"patterns": [
 						{ "include": "#surql-comment" },
-						{ "include": "#surql-type-name" },
+						{ "include": "#surql-variable" },
 						{
 							"begin": "\\s*\\b(ON)\\b",
 							"end": "(\\s*;)|(^(?:(?=[a-zA-Z])))",
@@ -126,7 +151,7 @@
 									"name": "entity.name.function.surql.database",
 									"match": "\\b(DATABASE|DB)\\b"
 								},
-								{ "include": "#surql-type-scope" },
+								{ "include": "#surql-statement-scope" },
 								{
 									"match": "\\b(TYPE)\\b\\s+\\b(EDDSA|ES256|ES384|ES512|HS256|HS384|HS512|PS256|PS384|PS512|RS256|RS384|RS512)\\b",
 									"captures": {
@@ -138,8 +163,8 @@
 									"name": "storage.type.surql.VALUE",
 									"match": "\\b(VALUE)\\b"
 								},
-								{ "include": "#surql-type-single-string" },
-								{ "include": "#surql-type-double-string" }
+								{ "include": "#surql-string-single" },
+								{ "include": "#surql-string-double" }
 							]
 						}
 					]
@@ -150,7 +175,7 @@
 					"beginCaptures": { "1": { "name": "storage.type.surql.scope" } },
 					"patterns": [
 						{ "include": "#surql-comment" },
-						{ "include": "#surql-type-name" },
+						{ "include": "#surql-variable" },
 						{
 							"match": "\\s*\\b(SESSION)\\s*(.*)\\b",
 							"captures": {
@@ -161,15 +186,15 @@
 						{
 							"match": "\\s*\\b(SIGNUP)\\s*(.*)\\b",
 							"captures": {
-								"1": { "name": "storage.type.surql.session" },
-								"2": { "name": "variable.parameter.surql.duration" }
+								"1": { "name": "entity.name.function.surql.signup" },
+								"2": { "name": "meta.function.signup" }
 							}
 						},
 						{
 							"match": "\\s*\\b(SIGNIN)\\s*(.*)\\b",
 							"captures": {
-								"1": { "name": "storage.type.surql.session" },
-								"2": { "name": "variable.parameter.surql.duration" }
+								"1": { "name": "entity.name.function.surql.signin" },
+								"2": { "name": "meta.function.signin" }
 							}
 						}
 					]
@@ -180,7 +205,7 @@
 					"beginCaptures": { "1": { "name": "storage.type.surql.table" } },
 					"patterns": [
 						{ "include": "#surql-comment" },
-						{ "include": "#surql-type-name" },
+						{ "include": "#surql-variable" },
 						{
 							"name": "storage.modifier.surql.drop_table",
 							"match": "\\s*\\b(DROP)\\b"
@@ -191,46 +216,46 @@
 						},
 						{
 							"begin": "\\s*\\b(AS)\\b",
-							"end": "(\\s*;)|(^(?:(?=[a-zA-Z])))",
+							"end": "(^(?:(?=\\s*\\b(PERMISSIONS)\\b)))|(\\s*;)|(^(?:(?=[a-zA-Z])))",
 							"beginCaptures": {
 								"1": { "name": "storage.modifier.surql.as_select" }
 							},
 							"patterns": [
+								{ "include": "#surql-comment" },
 								{
 									"begin": "\\s*\\b(SELECT)\\b",
-									"end": "(^(?:(?=\\s*\\b(FROM)\\b)))|(\\s*;)|(^(?:(?=[a-zA-Z])))",
+									"end": "(^(?:(?=\\s*\\b(PERMISSIONS)\\b)))|(\\.*;)|(^(?:(?=[a-zA-Z])))",
 									"beginCaptures": {
-										"1": { "name": "storage.modifier.surql.as_select" }
+										"1": { "name": "storage.type.surql.select" }
 									},
 									"patterns": [
 										{ "include": "#surql-comment" },
-										{ "include": "#surql-type-projection" }
+										{ "include": "#surql-projection" },
+										{ "include": "#surql-statement-from" },
+										{ "include": "#surql-statement-where" },
+										{ "include": "#surql-statement-group-by" }
 									]
-								},
+								}
+							]
+						},
+						{
+							"begin": "\\s*\\b(PERMISSIONS)\\b",
+							"end": "(\\.*;)|(^(?:(?=[a-zA-Z])))",
+							"beginCaptures": {
+								"1": { "name": "storage.type.surql.permission" }
+							},
+							"patterns": [
+								{ "include": "#surql-comment" },
 								{
-									"begin": "\\s*\\b(FROM)\\b",
-									"end": "(^(?:(?=\\s*\\b(GROUP)\\b)))|(\\s*;)|(^(?:(?=[a-zA-Z])))",
+									"begin": "\\s*\\b(FOR)\\b",
+									"end": "(^(?:(?=\\s*\\b(FOR)\\b)))|(\\.*;)|(^(?:(?=[a-zA-Z])))",
 									"beginCaptures": {
-										"1": { "name": "storage.modifier.surql.as_select" }
+										"1": { "name": "storage.modifier.surql.for" }
 									},
 									"patterns": [
 										{ "include": "#surql-comment" },
-										{ "include": "#surql-type-name" }
-									]
-								},
-								{
-									"begin": "\\s*\\b(GROUP)\\b",
-									"end": "(\\s*;)|(^(?:(?=[a-zA-Z])))",
-									"beginCaptures": {
-										"1": { "name": "storage.modifier.surql.as_select" }
-									},
-									"patterns": [
-										{ "include": "#surql-comment" },
-										{
-											"name": "storage.modifier.surql.by",
-											"match": "\\s*\\b(BY)\\b"
-										},
-										{ "include": "#surql-type-name" }
+										{ "include": "#surql-variable" },
+										{ "include": "#surql-statement-where" }
 									]
 								}
 							]
